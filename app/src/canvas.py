@@ -10,7 +10,11 @@ class Canvas(QGraphicsView):
         self.current_image = None
         
     def set_image(self,image):
+        self.current_image = image
         qim = None
+        if image is None:
+            self.scene().addPixmap(QPixmap())       
+            return 
         if len(image.shape) == 2:
             qim = QImage(image, image.shape[1],\
                                         image.shape[0], image.shape[1],QImage.Format_Grayscale8)
@@ -18,13 +22,17 @@ class Canvas(QGraphicsView):
             qim = QImage(image, image.shape[1],\
                                         image.shape[0], image.shape[1] * 3,QImage.Format_BGR888)
         else:
+            self.scene().addPixmap(QPixmap())
+            self.current_image = None
             raise ValueError("Unsupported image")
-        self.current_image = image
         pix = QPixmap(qim)
         self.scene().addPixmap(pix)
 
     def get_current_image(self):
         return self.current_image
+    
+    def update_image(self):
+        self.set_image(self.current_image)
     
     def mouseDoubleClickEvent(self, event) -> None:
         self.reset_scale()

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'diagramQvjotF.ui'
+## Form generated from reading UI file 'diagramnnDDJt.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -55,20 +55,17 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.canvas.sizePolicy().hasHeightForWidth())
         self.canvas.setSizePolicy(sizePolicy)
         self.splitter.addWidget(self.canvas)
-        self.tabWidget = QTabWidget(self.splitter)
-        self.tabWidget.setObjectName(u"tabWidget")
+        self.tools = QTabWidget(self.splitter)
+        self.tools.setObjectName(u"tools")
         sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.tabWidget.sizePolicy().hasHeightForWidth())
-        self.tabWidget.setSizePolicy(sizePolicy1)
-        self.tab = QWidget()
-        self.tab.setObjectName(u"tab")
-        self.tabWidget.addTab(self.tab, "")
-        self.tab_2 = QWidget()
-        self.tab_2.setObjectName(u"tab_2")
-        self.tabWidget.addTab(self.tab_2, "")
-        self.splitter.addWidget(self.tabWidget)
+        sizePolicy1.setHeightForWidth(self.tools.sizePolicy().hasHeightForWidth())
+        self.tools.setSizePolicy(sizePolicy1)
+        self.filters = QWidget()
+        self.filters.setObjectName(u"filters")
+        self.tools.addTab(self.filters, "")
+        self.splitter.addWidget(self.tools)
 
         self.horizontalLayout.addWidget(self.splitter)
 
@@ -80,7 +77,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tools.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -89,7 +86,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"PhotoEditor", None))
         self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("MainWindow", u"Tab 1", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("MainWindow", u"Tab 2", None))
+        self.tools.setTabText(self.tools.indexOf(self.filters), QCoreApplication.translate("MainWindow", u"Filters", None))
     # retranslateUi
 

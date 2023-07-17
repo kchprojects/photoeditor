@@ -1,0 +1,6 @@
+*.pyc
+*.png
+*.jpg
+*.bmp
+__pycache__
+.vscode

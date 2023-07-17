@@ -1,5 +1,7 @@
-from PySide6.QtWidgets import QMainWindow,QFileDialog
+from functools import partial
+from PySide6.QtWidgets import QMainWindow,QFileDialog,QVBoxLayout,QPushButton,QSpacerItem,QSizePolicy
 from PySide6.QtGui import QAction,QKeySequence
+from src.filter import all_filters
 from ui.ui_diagram import Ui_MainWindow
 import cv2
 
@@ -9,6 +11,7 @@ class Diagram(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setup_actions()
+        self.setup_filters()
     
     def setup_actions(self):
         self.open_action = QAction("Open image")
@@ -22,7 +25,22 @@ class Diagram(QMainWindow):
         filemenu = self.ui.menubar.addMenu("File")
         filemenu.addAction(self.open_action)
         filemenu.addAction(self.save_action)
-    
+        
+    def setup_filters(self):
+        self.filters = {}
+        self.filter_layout = QVBoxLayout()
+        self.ui.filters.setLayout(self.filter_layout)
+        for tag,f in all_filters.items():
+            btn = QPushButton(tag)
+            curr_filter = f()
+            self.filters[tag] = curr_filter
+            btn.clicked.connect(partial(self.apply_filter,curr_filter))
+            self.filter_layout.addWidget(btn)
+        self.filter_layout.addSpacerItem(QSpacerItem(0,10, QSizePolicy.Expanding, QSizePolicy.Expanding))
+                
+    def apply_filter(self,f):
+        self.ui.canvas.set_image(f(self.ui.canvas.get_current_image()))
+        
     def save_image(self):
         img = self.ui.canvas.get_current_image()
         if img is None:
