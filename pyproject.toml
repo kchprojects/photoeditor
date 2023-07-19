@@ -1,0 +1,17 @@
+[project]
+name = "photoeditor"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+dependencies = ["photoeditor-base"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["photoeditor"]
+namespaces = true
+
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+

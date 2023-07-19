@@ -11,7 +11,7 @@ def main():
     app = QApplication()
     diagram = Diagram()
     diagram.show()
-    app.exec_()
+    app.exec()
 
 if __name__ == "__main__":
     main()

@@ -1,7 +1,7 @@
 from functools import partial
 from PySide6.QtWidgets import QMainWindow,QFileDialog,QVBoxLayout,QPushButton,QSpacerItem,QSizePolicy
 from PySide6.QtGui import QAction,QKeySequence
-from src.filter import all_filters
+from src.filter_factory import all_filters
 from ui.ui_diagram import Ui_MainWindow
 import cv2
 
