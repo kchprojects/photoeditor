@@ -3,7 +3,7 @@ name = "photoeditor"
 version = "0.1.0"
 description = ""
 readme = "README.md"
-dependencies = ["photoeditor-base"]
+dependencies = ["photoeditor-base","opencv-python"]
 
 [tool.setuptools.packages.find]
 where = ["."]

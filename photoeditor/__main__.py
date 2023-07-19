@@ -1,11 +1,5 @@
-from os import path
-import sys
-sys.path.insert(0,path.abspath("."))
-
-
-
 from PySide6.QtWidgets import QApplication
-from src.diagram import Diagram
+from photoeditor.diagram import Diagram
 
 def main():
     app = QApplication()

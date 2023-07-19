@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'diagramnnDDJt.ui'
+## Form generated from reading UI file 'diagramrFvmwk.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -19,7 +19,7 @@ from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow, QMenuBar,
     QPushButton, QSizePolicy, QSpacerItem, QSplitter,
     QTabWidget, QVBoxLayout, QWidget)
 
-from src.canvas import Canvas
+from photoeditor.canvas import Canvas
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
