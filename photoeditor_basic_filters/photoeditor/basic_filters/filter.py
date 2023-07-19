@@ -1,11 +1,6 @@
 from typing import Any
 import cv2
-
-
-class Filter:
-    def __call__(self, img,selection=None) -> Any:
-        return img
-
+from photoeditor.base.filter import Filter
 
 class ToGrayscale(Filter):
     def __call__(self,img,selection=None):
