@@ -1,7 +1,7 @@
 from functools import partial
 from PySide6.QtWidgets import QMainWindow,QFileDialog,QVBoxLayout,QPushButton,QSpacerItem,QSizePolicy
 from PySide6.QtGui import QAction,QKeySequence
-from photoeditor.filter_factory import all_filters
+from photoeditor.filter_factory import get_all_filters
 from photoeditor.ui.ui_diagram import Ui_MainWindow
 import cv2
 
@@ -30,7 +30,7 @@ class Diagram(QMainWindow):
         self.filters = {}
         self.filter_layout = QVBoxLayout()
         self.ui.filters.setLayout(self.filter_layout)
-        for tag,f in all_filters.items():
+        for tag,f in get_all_filters().items():
             btn = QPushButton(tag)
             curr_filter = f()
             self.filters[tag] = curr_filter
@@ -39,6 +39,7 @@ class Diagram(QMainWindow):
         self.filter_layout.addSpacerItem(QSpacerItem(0,10, QSizePolicy.Expanding, QSizePolicy.Expanding))
                 
     def apply_filter(self,f):
+        f.show_argument_dialog()
         self.ui.canvas.set_image(f(self.ui.canvas.get_current_image()))
         
     def save_image(self):
