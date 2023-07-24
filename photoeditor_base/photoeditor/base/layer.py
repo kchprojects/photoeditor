@@ -42,6 +42,9 @@ class Layer(ABC):
         
     def alpha(self)->float:
         return self._alpha
+    
+    def tag(self)->str:
+        return self.__class__.__name__
 
 class FilterLayer(Layer):
     
@@ -53,6 +56,9 @@ class FilterLayer(Layer):
         if self._filter is not None:
             return self._filter(img,mask)
         return img
+    
+    def tag(self)->str:
+        return self._filter.__class__.__name__
 
 class ImageLayer(Layer):
     

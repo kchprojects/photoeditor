@@ -10,6 +10,7 @@ class ImagePreview(QGraphicsView):
         self.setSizePolicy(QSizePolicy.Minimum,QSizePolicy.Minimum)
         
     def set_image(self,image):
+        self.scene().clear()
         self.current_image = image
         qim = None
         if image is None:

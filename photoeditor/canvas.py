@@ -10,6 +10,7 @@ class Canvas(QGraphicsView):
         self.current_image = None
         
     def set_image(self,image):
+        self.scene().clear()
         self.current_image = image
         qim = None
         if image is None:

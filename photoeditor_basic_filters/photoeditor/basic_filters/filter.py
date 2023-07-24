@@ -24,4 +24,6 @@ class Blurr(Filter):
         self.sigma = IntArgument("sigma", 1,step=1,min_val=1)
         
     def __call__(self,img,selection=None):
+        if self.kernel_size.get()%2 == 0:
+            self.kernel_size.set(self.kernel_size.get()+1) 
         return cv2.GaussianBlur(img,(self.kernel_size.get(),)*2,self.sigma.get())

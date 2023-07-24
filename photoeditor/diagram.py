@@ -15,8 +15,7 @@ class Diagram(QMainWindow):
         self.ui.setupUi(self)
         self.setup_actions()
         self.setup_filters()
-        self.ui.layer_layout.addSpacerItem(QSpacerItem(0,10, QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.layers = []
+        self.setup_layers()
         
     def setup_actions(self):
         self.open_action = QAction("Open image")
@@ -42,7 +41,11 @@ class Diagram(QMainWindow):
             btn.clicked.connect(partial(self.add_filter_layer,curr_filter))
             self.filter_layout.addWidget(btn)
         self.filter_layout.addSpacerItem(QSpacerItem(0,10, QSizePolicy.Expanding, QSizePolicy.Expanding))
-                
+    
+    def setup_layers(self):
+        self.ui.layer_layout.addSpacerItem(QSpacerItem(0,10, QSizePolicy.Expanding, QSizePolicy.Expanding))
+        self.layers = []
+        
     def add_filter_layer(self,f):
         f.show_argument_dialog()
         self.add_layer(FilterLayer(f))
@@ -53,10 +56,30 @@ class Diagram(QMainWindow):
     def add_layer(self,layer):
         if not isinstance(layer,UiLayer):
             layer = UiLayer(layer)
+        self._connect_layer(layer)
         self.layers.append(layer)
         self.ui.layer_layout.insertWidget(0,layer)
         self.update_view()
-    
+        
+    def remove_layer(self,layer):
+        self.layers.remove(layer)
+        self.ui.layer_layout.removeWidget(layer)
+        layer.deleteLater()
+        self.update_view()
+        
+    def _connect_layer(self,layer:UiLayer):
+        def enable():
+            should_enable = layer.ui.enable_button.text() == "enable"
+            layer._layer.set_enable(should_enable)
+            if should_enable:
+                layer.ui.enable_button.setText("disable")
+            else:
+                layer.ui.enable_button.setText("enable")
+            self.update_view()
+        layer.ui.enable_button.clicked.connect(enable)
+        
+        layer.ui.delete_button.clicked.connect(partial(self.remove_layer,layer))
+        
     def update_view(self):
         img = None
         for l in self.layers:
@@ -75,6 +98,7 @@ class Diagram(QMainWindow):
         for i in range(self.ui.layer_layout.count()-1):
             child = self.ui.layer_layout.itemAt(i).widget()
             child.deleteLater()
+        self.layers.clear()
     
     def open_image(self):
         file,_ = QFileDialog.getOpenFileName(self,"Save image","*.png;*.jpg;*.bmp")

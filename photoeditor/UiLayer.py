@@ -6,11 +6,16 @@ class UiLayer(QWidget):
         super().__init__(parent)
         self.ui = Ui_Layer()
         self.ui.setupUi(self)
+        self.ui.name_edit.setText(layer.tag())
         self._layer = layer
     
     def apply(self,img=None,mask=None):
         new_img = self._layer.apply(img,mask)
-        self.ui.preview.set_image(new_img)
+        if self._layer.is_enabled():
+            self.ui.preview.set_image(new_img)
+        else:
+            self.ui.preview.set_image(None)
+            
         return new_img
     
         
