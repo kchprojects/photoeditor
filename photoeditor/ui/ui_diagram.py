@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'diagramrFvmwk.ui'
+## Form generated from reading UI file 'diagramBWRlfR.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -16,8 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow, QMenuBar,
-    QPushButton, QSizePolicy, QSpacerItem, QSplitter,
-    QTabWidget, QVBoxLayout, QWidget)
+    QPushButton, QScrollArea, QSizePolicy, QSpacerItem,
+    QSplitter, QTabWidget, QVBoxLayout, QWidget)
 
 from photoeditor.canvas import Canvas
 
@@ -62,6 +62,34 @@ class Ui_MainWindow(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.tools.sizePolicy().hasHeightForWidth())
         self.tools.setSizePolicy(sizePolicy1)
+        self.tools.setMinimumSize(QSize(250, 0))
+        self.layers = QWidget()
+        self.layers.setObjectName(u"layers")
+        self.verticalLayout_2 = QVBoxLayout(self.layers)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.layer_scroll = QScrollArea(self.layers)
+        self.layer_scroll.setObjectName(u"layer_scroll")
+        self.layer_scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.layer_scroll.setWidgetResizable(True)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 244, 527))
+        self.verticalLayout_4 = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_4.setSpacing(0)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.layer_layout = QVBoxLayout()
+        self.layer_layout.setObjectName(u"layer_layout")
+
+        self.verticalLayout_4.addLayout(self.layer_layout)
+
+        self.layer_scroll.setWidget(self.scrollAreaWidgetContents)
+
+        self.verticalLayout_2.addWidget(self.layer_scroll)
+
+        self.tools.addTab(self.layers, "")
         self.filters = QWidget()
         self.filters.setObjectName(u"filters")
         self.tools.addTab(self.filters, "")
@@ -85,7 +113,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"PhotoEditor", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.pushButton.setText("")
+        self.tools.setTabText(self.tools.indexOf(self.layers), QCoreApplication.translate("MainWindow", u"Layers", None))
         self.tools.setTabText(self.tools.indexOf(self.filters), QCoreApplication.translate("MainWindow", u"Filters", None))
     # retranslateUi
 

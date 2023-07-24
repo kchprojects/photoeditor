@@ -47,17 +47,15 @@ class IntArgument(Argument):
         layout.addWidget(spinbox)
         return self._widget
     
-class Filter:
+class Filter(ABC):
+    @abstractmethod
     def __call__(self, img,selection=None) -> Any:
         return img
 
     def show_argument_dialog(self):
         dialog = QDialog()
         dialog.setWindowTitle(self.__class__.__name__)
-        layout = QVBoxLayout()
-        for attr in [self.__getattribute__(v) for v in vars(self)]:
-            if isinstance(attr,Argument):
-                layout.addWidget(attr.get_widget())
+        layout = self.get_attrib_layout()
         if layout.count() == 0:
             return
         button = QPushButton("OK")
@@ -65,4 +63,24 @@ class Filter:
         layout.addWidget(button)
         dialog.setLayout(layout)        
         dialog.exec()
+    
+    def get_attrib_layout(self):
+        layout = QVBoxLayout()
+        for attr in [self.__getattribute__(v) for v in vars(self)]:
+            if isinstance(attr,Argument):
+                layout.addWidget(attr.get_widget())
+        return layout
+    
+class CombinedFilter(Filter):
+    def __init__(self,filters:list[Filter]):
+        super().__init__()
+        self._filters = filters
+    
+    def get_attrib_layout(self):
+        #TODO: decide if this should return only empty layout or not
+        layout = QVBoxLayout()
+        for f in self._filters:
+            layout.addLayout(f.get_attrib_layout())
+        return layout
+
     

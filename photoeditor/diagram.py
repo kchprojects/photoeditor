@@ -5,6 +5,9 @@ from photoeditor.filter_factory import get_all_filters
 from photoeditor.ui.ui_diagram import Ui_MainWindow
 import cv2
 
+from photoeditor.base.layer import FilterLayer,ImageLayer
+from photoeditor.UiLayer import UiLayer
+
 class Diagram(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -12,7 +15,9 @@ class Diagram(QMainWindow):
         self.ui.setupUi(self)
         self.setup_actions()
         self.setup_filters()
-    
+        self.ui.layer_layout.addSpacerItem(QSpacerItem(0,10, QSizePolicy.Expanding, QSizePolicy.Expanding))
+        self.layers = []
+        
     def setup_actions(self):
         self.open_action = QAction("Open image")
         self.open_action.setShortcut(QKeySequence.Open)
@@ -34,14 +39,30 @@ class Diagram(QMainWindow):
             btn = QPushButton(tag)
             curr_filter = f()
             self.filters[tag] = curr_filter
-            btn.clicked.connect(partial(self.apply_filter,curr_filter))
+            btn.clicked.connect(partial(self.add_filter_layer,curr_filter))
             self.filter_layout.addWidget(btn)
         self.filter_layout.addSpacerItem(QSpacerItem(0,10, QSizePolicy.Expanding, QSizePolicy.Expanding))
                 
-    def apply_filter(self,f):
+    def add_filter_layer(self,f):
         f.show_argument_dialog()
-        self.ui.canvas.set_image(f(self.ui.canvas.get_current_image()))
+        self.add_layer(FilterLayer(f))
+    
+    def add_image_layer(self,img):
+        self.add_layer(ImageLayer(img))
         
+    def add_layer(self,layer):
+        if not isinstance(layer,UiLayer):
+            layer = UiLayer(layer)
+        self.layers.append(layer)
+        self.ui.layer_layout.insertWidget(0,layer)
+        self.update_view()
+    
+    def update_view(self):
+        img = None
+        for l in self.layers:
+            img = l.apply(img)
+        self.ui.canvas.set_image(img)
+                
     def save_image(self):
         img = self.ui.canvas.get_current_image()
         if img is None:
@@ -50,9 +71,15 @@ class Diagram(QMainWindow):
             file,_ = QFileDialog.getSaveFileName(self,"Save image","*.png;*.jpg;*.bmp")
             img = cv2.imwrite(file,img)
     
+    def clear_layers(self):
+        for i in range(self.ui.layer_layout.count()-1):
+            child = self.ui.layer_layout.itemAt(i).widget()
+            child.deleteLater()
+    
     def open_image(self):
         file,_ = QFileDialog.getOpenFileName(self,"Save image","*.png;*.jpg;*.bmp")
         img = cv2.imread(file,cv2.IMREAD_UNCHANGED)
-        self.ui.canvas.set_image(img)
+        self.clear_layers()
+        self.add_image_layer(img)
         
         
