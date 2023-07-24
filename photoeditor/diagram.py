@@ -80,6 +80,11 @@ class Diagram(QMainWindow):
         
         layer.ui.delete_button.clicked.connect(partial(self.remove_layer,layer))
         
+        def set_alpha(x):
+            layer._layer.set_alpha(x/1000)
+            self.update_view()
+        layer.ui.alpha_slider.valueChanged.connect(set_alpha)
+        
     def update_view(self):
         img = None
         for l in self.layers:
