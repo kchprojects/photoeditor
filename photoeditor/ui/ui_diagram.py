@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'diagramBWRlfR.ui'
+## Form generated from reading UI file 'diagramkCzxVP.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.5.1
 ##
@@ -32,10 +32,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
+        self.select_rect_button = QPushButton(self.centralwidget)
+        self.select_rect_button.setObjectName(u"select_rect_button")
 
-        self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.select_rect_button)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -113,7 +113,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"PhotoEditor", None))
-        self.pushButton.setText("")
+        self.select_rect_button.setText(QCoreApplication.translate("MainWindow", u"Select Rect", None))
         self.tools.setTabText(self.tools.indexOf(self.layers), QCoreApplication.translate("MainWindow", u"Layers", None))
         self.tools.setTabText(self.tools.indexOf(self.filters), QCoreApplication.translate("MainWindow", u"Filters", None))
     # retranslateUi

@@ -18,9 +18,9 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="select_rect_button">
         <property name="text">
-         <string/>
+         <string>Select Rect</string>
         </property>
        </widget>
       </item>

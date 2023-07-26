@@ -6,6 +6,7 @@ from photoeditor.ui.ui_diagram import Ui_MainWindow
 import cv2
 
 from photoeditor.base.layer import FilterLayer,ImageLayer
+from photoeditor.base.selection import UiRectangleSelection
 from photoeditor.UiLayer import UiLayer
 
 class Diagram(QMainWindow):
@@ -16,6 +17,29 @@ class Diagram(QMainWindow):
         self.setup_actions()
         self.setup_filters()
         self.setup_layers()
+        self.setup_tools()
+    
+    def setup_tools(self):
+        self.activeTool = None
+        self.tool_buttons:list[QPushButton] = []
+        
+        self.ui.select_rect_button.clicked.connect(partial(self.activate_tool,UiRectangleSelection,self.ui.select_rect_button))
+        self.tool_buttons.append(self.ui.select_rect_button)
+        
+        for b in self.tool_buttons:
+            b.setCheckable(True)
+            b.setChecked(False)
+        
+    def activate_tool(self,tool_type,btn:QPushButton):
+        if not btn.isChecked():
+            self.activeTool = None
+            self.ui.canvas.set_tool(None)
+            return
+        for b in self.tool_buttons:
+            if b is not btn:
+                b.setChecked(False)
+        self.activeTool = tool_type()
+        self.ui.canvas.set_tool(self.activeTool)
         
     def setup_actions(self):
         self.open_action = QAction("Open image")
