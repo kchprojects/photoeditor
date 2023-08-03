@@ -2,7 +2,7 @@ from typing import Any
 import cv2
 from abc import ABC,abstractmethod
 
-from PySide6.QtWidgets import QHBoxLayout,QLabel,QWidget,QSpinBox,QDialog,QVBoxLayout,QPushButton
+from PySide6.QtWidgets import QHBoxLayout,QLabel,QWidget,QDoubleSpinBox,QSpinBox,QDialog,QVBoxLayout,QPushButton
 
 class Argument(ABC):
     def __init__(self,label,value):
@@ -38,6 +38,28 @@ class IntArgument(Argument):
         self._widget.setLayout(layout)
         layout.addWidget(QLabel(self._label))
         spinbox = QSpinBox()
+        spinbox.setSingleStep(self._step)
+        spinbox.valueChanged.connect(self.set)
+        if self._min_val is not None:
+            spinbox.setMinimum(self._min_val)
+        if self._max_val is not None:
+            spinbox.setMaximum(self._max_val)
+        layout.addWidget(spinbox)
+        return self._widget
+
+class FloatArgument(Argument):
+    def __init__(self,label,value,step=0.1,min_val=None,max_val=None):
+        super().__init__(label,value)
+        self._step = step
+        self._min_val = min_val
+        self._max_val = max_val
+    
+    def get_widget(self):
+        self._widget = QWidget()
+        layout=QHBoxLayout()
+        self._widget.setLayout(layout)
+        layout.addWidget(QLabel(self._label))
+        spinbox = QDoubleSpinBox()
         spinbox.setSingleStep(self._step)
         spinbox.valueChanged.connect(self.set)
         if self._min_val is not None:

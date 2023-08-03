@@ -155,7 +155,7 @@
   <customwidget>
    <class>Canvas</class>
    <extends>QGraphicsView</extends>
-   <header location="global">photoeditor/canvas.h</header>
+   <header location="global">photoeditor/base/canvas.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

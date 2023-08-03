@@ -1,9 +1,13 @@
 from functools import partial
-from PySide6.QtWidgets import QMainWindow,QFileDialog,QVBoxLayout,QPushButton,QSpacerItem,QSizePolicy
-from PySide6.QtGui import QAction,QKeySequence
+from PySide6.QtWidgets import QMainWindow,QFileDialog,QVBoxLayout,QPushButton,QSpacerItem,QSizePolicy,QDialog
+from PySide6.QtGui import QAction,QKeySequence,QCursor
+from PySide6.QtCore import Qt
 from photoeditor.filter_factory import get_all_filters
 from photoeditor.ui.ui_diagram import Ui_MainWindow
 import cv2
+
+
+from photoeditor.comand_line import ComandLine
 
 from photoeditor.base.layer import FilterLayer,ImageLayer
 from photoeditor.base.selection import UiRectangleSelection
@@ -50,9 +54,16 @@ class Diagram(QMainWindow):
         self.save_action.setShortcut(QKeySequence.Save)
         self.save_action.triggered.connect(self.save_image)
         
+        self.prompt_edit = QAction("Prompt action")
+        self.prompt_edit.setShortcut(QKeySequence(Qt.CTRL | Qt.Key_Space))
+        self.prompt_edit.triggered.connect(self.prompt_action)
+        
         filemenu = self.ui.menubar.addMenu("File")
         filemenu.addAction(self.open_action)
         filemenu.addAction(self.save_action)
+        
+        edit_menu = self.ui.menubar.addMenu("Edit")
+        edit_menu.addAction(self.prompt_edit)
         
     def setup_filters(self):
         self.filters = {}
@@ -60,7 +71,7 @@ class Diagram(QMainWindow):
         self.ui.filters.setLayout(self.filter_layout)
         for tag,f in get_all_filters().items():
             btn = QPushButton(tag)
-            curr_filter = f()
+            curr_filter = f
             self.filters[tag] = curr_filter
             btn.clicked.connect(partial(self.add_filter_layer,curr_filter))
             self.filter_layout.addWidget(btn)
@@ -69,10 +80,17 @@ class Diagram(QMainWindow):
     def setup_layers(self):
         self.ui.layer_layout.addSpacerItem(QSpacerItem(0,10, QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.layers = []
-        
+    
+    def add_filter(self,name:str):
+        if name in self.filters:
+            self.add_filter_layer(self.filters[name])
+        else:
+            print("Unknown filter")
+            
     def add_filter_layer(self,f):
-        f.show_argument_dialog()
-        self.add_layer(FilterLayer(f))
+        instance = f()
+        instance.show_argument_dialog()
+        self.add_layer(FilterLayer(instance))
     
     def add_image_layer(self,img):
         self.add_layer(ImageLayer(img))
@@ -134,5 +152,16 @@ class Diagram(QMainWindow):
         img = cv2.imread(file,cv2.IMREAD_UNCHANGED)
         self.clear_layers()
         self.add_image_layer(img)
+    
+    def prompt_action(self):
+        w = ComandLine(self)
+        d = QDialog()
+        layout = QVBoxLayout()
+        layout.addWidget(w)
+        d.setLayout(layout)
+        d.setWindowFlag(Qt.FramelessWindowHint)
+
+        d.move(QCursor.pos())
+        d.exec()
         
         
