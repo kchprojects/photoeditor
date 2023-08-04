@@ -63,6 +63,19 @@ class RectangleSelection(Selection):
     def on_mouse_move(self, coords: Point):
         if self._is_moving and self._left_top is not None:
             self.set_right_bottom(coords)
+        
+    def get_rect(self):
+        if self._left_top is not None and self._right_bottom is not None:
+            ax,ay = self._left_top.split()
+            bx,by = self._right_bottom.split()
+            if ax > bx:
+                ax,bx = bx,ax
+            if ay > by:
+                ay,by = by,ay
+            lt = Point(ax,ay)
+            rb= Point(bx,by)
+            return [*lt.split(), *(rb - lt).split()]
+        return None
 
 if HAS_QT:
     class UiRectangleSelection(QGraphicsRectItem,RectangleSelection):
@@ -80,17 +93,9 @@ if HAS_QT:
             painter.drawRect(self.rect())
             
         def on_update(self):
-            if self._left_top is not None and self._right_bottom is not None:
-                ax,ay = self._left_top.split()
-                bx,by = self._right_bottom.split()
-                if ax > bx:
-                    ax,bx = bx,ax
-                if ay > by:
-                    ay,by = by,ay
-                lt = Point(ax,ay)
-                rb= Point(bx,by)
-                
-                self.setRect(*lt.split(), *(rb - lt).split())
+            rect = self.get_rect()                
+            if rect is not None:
+                self.setRect(*rect)
                 self.show()
             else:
                 self.hide()

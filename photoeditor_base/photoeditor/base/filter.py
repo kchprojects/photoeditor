@@ -92,6 +92,8 @@ class Filter(ABC):
             if isinstance(attr,Argument):
                 layout.addWidget(attr.get_widget())
         return layout
+class SegmentationFilter(Filter,ABC):
+    pass
     
 class CombinedFilter(Filter):
     def __init__(self,filters:list[Filter]):

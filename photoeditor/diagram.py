@@ -130,7 +130,7 @@ class Diagram(QMainWindow):
     def update_view(self):
         img = None
         for l in self.layers:
-            img = l.apply(img)
+            img = l.apply(img, self.activeTool)
         self.ui.canvas.set_image(img)
                 
     def save_image(self):
@@ -154,13 +154,12 @@ class Diagram(QMainWindow):
         self.add_image_layer(img)
     
     def prompt_action(self):
-        w = ComandLine(self)
         d = QDialog()
+        w = ComandLine(self,d)
         layout = QVBoxLayout()
         layout.addWidget(w)
         d.setLayout(layout)
         d.setWindowFlag(Qt.FramelessWindowHint)
-
         d.move(QCursor.pos())
         d.exec()
         

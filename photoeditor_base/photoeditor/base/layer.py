@@ -1,5 +1,6 @@
 from abc import ABC,abstractmethod
 import cv2
+import numpy as np
 
 class Layer(ABC):
     def __init__(self):
@@ -11,6 +12,10 @@ class Layer(ABC):
             if img is None:
                 return self._apply_implementation(img,mask)
             computed = self._apply_implementation(img,mask)
+            if computed is None:
+                return None
+            if computed.dtype == bool:
+                computed = (computed*255).astype(np.uint8)
             if len(computed.shape) == 2 and len(img.shape) == 3:
                 computed = cv2.cvtColor(computed,cv2.COLOR_GRAY2BGR)
             elif len(img.shape) == 2 and len(computed.shape) == 3:
